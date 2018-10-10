@@ -1,0 +1,25 @@
+<aura:component description="LudusGlobalRanking" controller="ChartsController"
+                implements="flexipage:availableForAllPageTypes" access="global">
+    <ltng:require scripts="{! $Resource.ChartJS23 }"
+                  afterScriptsLoaded="{! c.scriptsLoaded }" />
+
+    <aura:registerEvent name="ludusChartEvent" type="c:LudusChartEvent"/>
+
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <aura:handler name="change" value="{! v.dataLoaded }" action="{! c.dataChange }" />
+    <aura:handler event="c:LudusChartEvent" action="{!c.filtersChange}"/>
+
+    <aura:attribute name="labels" type="List"/>
+    <aura:attribute name="colors" type="List"/>
+    <aura:attribute name="data" type="List"/>
+    <aura:attribute name="dataObj" type="Object"/>
+    <aura:attribute name="filters" type="Object"/>
+
+    <aura:attribute name="chartsJsLoaded" type="Boolean" default="false"/>
+
+    <div class="slds-box slds-theme_default">
+        <div class="slds-text-heading--medium">Ranking</div>
+        <canvas aura:id="chart" height="380"></canvas>
+    </div>
+
+</aura:component>

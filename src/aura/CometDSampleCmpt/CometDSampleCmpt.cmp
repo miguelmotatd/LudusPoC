@@ -1,0 +1,17 @@
+<aura:component controller="CometDSampleAuraController"
+                implements="flexipage:availableForAllPageTypes"
+                access="global">
+	<ltng:require scripts="{!join(',', 
+    $Resource.cometD + '/cometd.js', 
+    $Resource.cometD + '/jquery-1.5.1.js',
+    $Resource.cometD + '/json2.js',
+    $Resource.cometD + '/jquery.cometd.js')}" 
+    afterScriptsLoaded="{!c.bootstrapCometD}"/>
+    
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="subject" type="String"/>
+    <aura:attribute name="status" type="String"/>
+
+	    	<p>{!v.subject}</p>
+            <p>{!v.status}</p>
+</aura:component>

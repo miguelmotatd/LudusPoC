@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="RuleEditorCreateBoxEvent">
+    <aura:attribute name="status" type="String"/>
+    <aura:attribute name="errorMessage" type="String"/>
+</aura:event>

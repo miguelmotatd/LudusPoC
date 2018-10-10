@@ -1,0 +1,67 @@
+<aura:component description="LudusDashboard" controller="ChartsController"
+                implements="flexipage:availableForAllPageTypes,force:appHostable" access="global">
+
+    <ltng:require scripts="{!join(',',
+            $Resource.cometD + '/cometd.js',
+            $Resource.cometD + '/jquery-1.5.1.js',
+            $Resource.cometD + '/json2.js',
+            $Resource.cometD + '/jquery.cometd.js')}"
+                  afterScriptsLoaded="{!c.initPushTopic}"/>
+
+    <aura:registerEvent name="ludusChartEvent" type="c:LudusChartEvent"/>
+    <aura:handler event="c:LudusChartEvent" action="{!c.filtersChange}"/>
+
+
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="months" type="List"/>
+    <aura:attribute name="years" type="List"/>
+    <aura:attribute name="monthSelected" type="String"/>
+    <aura:attribute name="yearSelected" type="String"/>
+    <aura:attribute name="earlierDate" type="Date"/>
+    <aura:attribute name="filters" type="Object"/>
+
+    <div class="slds-box slds-theme_default">
+        <lightning:layout horizontalAlign="space" multipleRows="true">
+            <lightning:layoutItem size="6">
+            </lightning:layoutItem>
+            <lightning:layoutItem size="2">
+                <aura:renderIf isTrue="{!not(empty(v.filters.userName))}">
+                    <lightning:pill label="{! v.filters.userName }" onremove="{! c.onRemoveUserFilter }"/>
+                </aura:renderIf>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="2">
+                <lightning:select name="yearSelector" label="Select a year" onchange="{! c.dateChanged }"
+                                  value="{! v.yearSelected }">
+                    <aura:iteration items="{!v.years}" var="item">
+                        <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="2">
+                <aura:renderIf isTrue="{!not(empty(v.yearSelected))}">
+                    <lightning:select name="monthSelector" label="Select a month" onchange="{! c.dateChanged }"
+                                      value="{! v.monthSelected }">
+                        <aura:iteration items="{!v.months}" var="item">
+                            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                        </aura:iteration>
+                    </lightning:select>
+                </aura:renderIf>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="4">
+                <c:LudusGlobalRanking />
+            </lightning:layoutItem>
+            <lightning:layoutItem size="4">
+                <c:LudusRuleDistribution />
+            </lightning:layoutItem>
+            <!--<lightning:layoutItem size="4">
+                <c:LudusHomeRanking />
+            </lightning:layoutItem>-->
+        </lightning:layout>
+    </div>
+
+
+
+
+</aura:component>

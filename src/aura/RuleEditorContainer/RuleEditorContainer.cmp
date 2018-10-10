@@ -1,0 +1,36 @@
+<aura:component description="RuleEditorContainer" implements="force:appHostable">
+
+    <aura:handler event="c:RuleEditorCreateBoxEvent" action="{!c.handleCreateBoxEvent}"/>
+
+    <aura:attribute name="showNewRuleModal" type="Boolean" access="private" default="false" />
+
+    <div class="container">
+        <!--<aura:renderIf isTrue="{! v.isDataLoaded }">-->
+            <div class="c-page-header-wrapper slds-p-left--x-large slds-m-bottom--xx-small">
+                <div class="c-page-header">
+                    <p class="slds-text-title--caps slds-line-height--reset">Rule Editor</p>
+                    <h1 class="slds-text-heading--large slds-p-right--x-small slds-p-bottom--medium">aaaaaaa</h1>
+                    <div class="c-heading-descr c-greytext">bbbbbbb</div>
+                </div>
+            </div>
+            <div aura:id="accounts-page__body" class="slds-p-horizontal--x-large">
+                <div class="slds-p-bottom--large">
+                    <div class="slds-m-around_small">
+                        <c:RuleEditorList />
+                    </div>
+                    <div class="slds-m-top--large slds-float_right">
+                            <lightning:button onclick="{! c.newRuleClicked }" variant="neutral" label="New Rule" />
+                    </div>
+                </div>
+            </div>
+        <!--</aura:renderIf>-->
+
+        <aura:renderIf isTrue="{! v.showNewRuleModal }">
+            <c:RuleEditorCreateBox />
+        </aura:renderIf>
+
+<!--            <div class="cAdminLayoutHandler centered">
+                <lightning:spinner variant="brand" alternativeText="Component is loading." />
+            </div>-->
+    </div>
+</aura:component>

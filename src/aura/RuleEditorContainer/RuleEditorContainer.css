@@ -1,0 +1,16 @@
+.THIS hr {
+    margin: 0.8rem 0 !important;
+}
+
+.THIS .container {
+    position:relative;
+}
+
+.THIS .c-button {
+    cursor: pointer;
+}
+
+.THIS .slds-modal__container {
+    vertical-align: middle;
+    width: 32rem !important;
+}

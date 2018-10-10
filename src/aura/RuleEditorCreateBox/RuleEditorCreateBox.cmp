@@ -1,0 +1,136 @@
+<aura:component description="RuleEditorCreateBox" controller="RuleEditorController">
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+    <aura:registerEvent name="createBoxEvent" type="c:RuleEditorCreateBoxEvent"/>
+
+    <aura:attribute name="rule" type="Object" />
+
+    <aura:attribute name="objectOptions"                type="List" />
+    <aura:attribute name="objectSelectedValue"          type="String" default="" />
+    <aura:attribute name="picklistOptions"              type="List" />
+    <aura:attribute name="picklistSelectedValue"        type="String" default="" />
+    <aura:attribute name="fieldCompareOptions"          type="List" />
+    <aura:attribute name="fieldCompareSelectedValue"    type="String" />
+    <aura:attribute name="operatorOptions"              type="List" />
+    <aura:attribute name="operatorSelectedValue"        type="String" default="Equals" />
+    <aura:attribute name="typeOfRuleOptions"            type="List" />
+    <aura:attribute name="typeOfRuleSelectedValue"      type="String" default="" />
+    <aura:attribute name="userOptions"                  type="List" />
+    <aura:attribute name="userSelectedValue"            type="String" />
+    <aura:attribute name="points"                       type="Integer" />
+    <aura:attribute name="ruleName"                     type="String" />
+
+    <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header c-border-radius c-modal-header">
+                <h2 class="slds-text-heading--medium c-heading-title">ModalHeader</h2>
+            </div>
+            <div class="slds-modal__content">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-only" style="height: 640px;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal Header</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning:layout horizontalAlign="space" multipleRows="true">
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="12">
+                                <lightning:input label="Rule name" aura:id="ruleName" type="text"
+                                                 value="{! v.ruleName }" />
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <lightning:select name="objectSelect" label="Select an object:" aura:id="objectSelect" value="{!v.objectSelectedValue}" onchange="{!c.onChangeObjectOptions}">
+                                    <aura:iteration items="{!v.objectOptions}" var="item">
+                                        <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <lightning:select name="typeOfRuleSelect" label="Select a rule type:" aura:id="typeOfRuleSelect"
+                                                  value="{!v.typeOfRuleSelectedValue}">
+                                    <aura:iteration items="{!v.typeOfRuleOptions}" var="item">
+                                        <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <aura:renderIf isTrue="{!v.objectSelectedValue != ''}">
+                                    <lightning:select name="fieldSelect" label="Select a field:" aura:id="fieldSelect"
+                                                      value="{!v.picklistSelectedValue}" onchange="{!c.onChangePicklistOptions}">
+                                        <aura:iteration items="{!v.picklistOptions}" var="item">
+                                            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </aura:renderIf>
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <aura:renderIf isTrue="{! v.picklistSelectedValue != ''}">
+                                    <lightning:select name="fieldCompareSelect" label="Value to match:" aura:id="fieldCompareSelect"
+                                                      value="{!v.fieldCompareSelectedValue}" >
+                                        <aura:iteration items="{!v.fieldCompareOptions}" var="item">
+                                            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </aura:renderIf>
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <aura:renderIf isTrue="{!v.objectSelectedValue != ''}">
+                                    <lightning:select name="userSelect" label="Select a user:" aura:id="userSelect"
+                                                      value="{!v.userSelectedValue}" >
+                                        <aura:iteration items="{!v.userOptions}" var="item">
+                                            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </aura:renderIf>
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <lightning:input label="Points" aura:id="points" type="number" min="0" step="1" value="{!v.points}" />
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+
+                            </lightning:layoutItem>
+
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                                <aura:renderIf isTrue="{!v.typeOfRuleSelectedValue != 'Picklist'}">
+                                    <lightning:select name="operatorSelect" label="Select an operator:" aura:id="operatorSelect"
+                                                      value="{!v.operatorSelectedValue}">
+                                        <aura:iteration items="{!v.operatorOptions}" var="item">
+                                            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </aura:renderIf>
+                            </lightning:layoutItem>
+
+
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                            </lightning:layoutItem>
+
+                            <lightning:layoutItem flexibility="auto" padding="around-small" size="6">
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button label="Cancel" title="Cancel rule creation" onclick="{! c.onClickCancel }"
+                                      variant="neutral"/>
+                    <lightning:button label="Save" title="Save Rule" onclick="{! c.onClickSave }"
+                                      variant="brand"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</aura:component>
